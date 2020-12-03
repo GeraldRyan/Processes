@@ -9,6 +9,20 @@
 int main(void)
 {
     // Your code here
+    int x = 100;
+    int f = fork();
 
+    if (f == 0)
+    {
+        x++;
+        printf("Hello world from child\n");
+        printf("Value of X (Child) is %i\n", x);
+    }
+    else{
+        x--;
+        printf("Hello world from parent. Child ID is %d\n", f);
+        printf("Value of X (Parent) is %i\n", x);
+
+    }
     return 0;
 }
