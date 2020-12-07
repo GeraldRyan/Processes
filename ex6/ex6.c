@@ -27,7 +27,7 @@ int main()
     // clock_gettime(CLOCK_REALTIME)
     for (int i = 0; i < number_iter; i++)
     {
-        fprintf(stdout, "."); // empty write to standard out (equivalent to printf(""))
+        fprintf(stdout, ""); // empty write to standard out (equivalent to printf(""))
     }
     end_t = clock();
     total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;

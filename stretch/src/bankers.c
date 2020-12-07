@@ -19,7 +19,7 @@ int open_balance_file(char *filename)
 	// This line returns an open "file descriptor" (a number, how Unix
 	// tracks open files) for both reading and writing. If the file does
 	// not exist, it is created with 0644 permissions.
-	return open(filename, O_CREAT|O_RDWR, 0644);
+	return open(filename, O_CREAT | O_RDWR, 0644);
 }
 
 /**
@@ -50,7 +50,8 @@ void write_balance(int fd, int balance)
 	int bytes_written = write(fd, buffer, size);
 
 	// Make sure nothing went wrong
-	if (bytes_written < 0) {
+	if (bytes_written < 0)
+	{
 		// What does perror do? man 3 perror
 		perror("write");
 	}
@@ -72,7 +73,8 @@ void read_balance(int fd, int *balance)
 	buffer[bytes_read] = '\0';
 
 	// Error check
-	if (bytes_read < 0) {
+	if (bytes_read < 0)
+	{
 		perror("read");
 		return;
 	}
@@ -100,7 +102,7 @@ int get_random_amount(void)
 int main(int argc, char **argv)
 {
 	// Parse the command line
-	
+
 	// vvvvvvvvvvvvvvvvvv
 	// !!!! IMPLEMENT ME:
 
@@ -110,16 +112,29 @@ int main(int argc, char **argv)
 	// For example, to fork 12 processes:
 	//
 	//  ./bankers 12
+	int num_processes = 1;
+	if (argv[1] == NULL)
+	{
+		printf("Please enter an integer command line argument between 1 and 20 (exiting)\n\n");
+		return 1;
+	}
+	else
+	{
+		char *remainder;
+		num_processes = strtol(argv[1], &remainder, 10);
+		printf("Rest of string: %s\n", remainder);
+	}
+		printf("Num processes %u\n", num_processes);
+
 
 	// Check to make sure they've added one paramter to the command line
 	// with argc. If they didn't specify anything, print an error
 	// message to stderr, and exit with status 1:
 	//
 	// "usage: bankers numprocesses\n"
-	
+
 	// Store the number of processes in this variable:
 	// How many processes to fork at once
-	int num_processes = IMPLEMENT ME
 
 	// Make sure the number of processes the user specified is more than
 	// 0 and print an error to stderr if not, then exit with status 2:
@@ -134,8 +149,10 @@ int main(int argc, char **argv)
 	close_balance_file(fd);
 
 	// Rabbits, rabbits, rabbits!
-	for (int i = 0; i < num_processes; i++) {
-		if (fork() == 0) {
+	for (int i = 0; i < num_processes; i++)
+	{
+		if (fork() == 0)
+		{
 			// "Seed" the random number generator with the current
 			// process ID. This makes sure all processes get different
 			// random numbers:
@@ -170,7 +187,8 @@ int main(int argc, char **argv)
 	}
 
 	// Parent process: wait for all forked processes to complete
-	for (int i = 0; i < num_processes; i++) {
+	for (int i = 0; i < num_processes; i++)
+	{
 		wait(NULL);
 	}
 
