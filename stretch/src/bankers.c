@@ -90,10 +90,7 @@ int get_random_amount(void)
 {
 	// vvvvvvvvvvvvvvvvvv
 	// !!!! IMPLEMENT ME:
-
-	// Return a random number between 0 and 999 inclusive using rand()
-
-	// ^^^^^^^^^^^^^^^^^^
+	return rand() % 1000;
 }
 
 /**
@@ -115,7 +112,7 @@ int main(int argc, char **argv)
 	int num_processes = 1;
 	if (argv[1] == NULL)
 	{
-		printf("Please enter an integer command line argument between 1 and 20 (exiting)\n\n");
+		printf("Please enter an integer command line argument between 1 and 50 (exiting)\n\n");
 		return 1;
 	}
 	else
@@ -149,7 +146,7 @@ int main(int argc, char **argv)
 
 	// Start with $10K in the bank. Easy peasy.
 	int fd = open_balance_file(BALANCE_FILE);
-	write_balance(fd, 10000);
+	write_balance(fd, 3000);
 	close_balance_file(fd);
 
 	// Rabbits, rabbits, rabbits!
@@ -159,9 +156,9 @@ int main(int argc, char **argv)
 		{
 			// "Seed" the random number generator with the current
 			// process ID. This makes sure all processes get different
+
 			// random numbers:
 			srand(getpid());
-
 			// Get a random amount of cash to withdraw. YOLO.
 			int amount = get_random_amount();
 
@@ -172,27 +169,35 @@ int main(int argc, char **argv)
 
 			// Open the balance file (feel free to call the helper
 			// functions, above).
+			fd = open_balance_file(BALANCE_FILE);
 
 			// Read the current balance
-
+			read_balance(fd, &balance);
 			// Try to withdraw money
-			//
+			printf("Balance is %i and pid is %i\n", balance, getpid());
+			if (amount > balance)
+			{
+				printf("Insufficient funds. Withdrawl amount attempted %d, balance: %d Returning card\n", amount, balance);
+			}
+			else
+			{
+				balance -= amount;
+				printf("Withdrew %d, new balance is %d\n", amount, balance);
+			}
+			write_balance(fd, balance);
 			// Sample messages to print:
 			//
 			// "Withdrew $%d, new balance $%d\n"
 			// "Only have $%d, can't withdraw $%d\n"
 
 			// Close the balance file
+			close_balance_file(fd);
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 			// Child process exits
 			exit(0);
 		}
-	}
-
-	// Parent process: wait for all forked processes to complete
-	for (int i = 0; i < num_processes; i++)
-	{
+		// Parent process: wait for each forked process to complete
 		wait(NULL);
 	}
 
