@@ -121,11 +121,15 @@ int main(int argc, char **argv)
 	else
 	{
 		char *remainder;
+		if (num_processes = strtol(argv[1], &remainder, 10) < 1)
+		{
+			fprintf(stderr, "Please request 1 or more processes (exiting)\n");
+			return 2;
+		}
 		num_processes = strtol(argv[1], &remainder, 10);
 		printf("Rest of string: %s\n", remainder);
 	}
-		printf("Num processes %u\n", num_processes);
-
+	printf("Num processes %u\n", num_processes);
 
 	// Check to make sure they've added one paramter to the command line
 	// with argc. If they didn't specify anything, print an error
