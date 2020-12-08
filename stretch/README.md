@@ -60,22 +60,28 @@ This works fine for any one process trying to withdraw money in isolation.
 
 ## Assignment
 
-Implement code to safely withdraw money from a bank account. (A
+Implement code to safely withdrsaw money from a bank account. (A
 simulated bank account, that is. Don't get your hopes up.)
 
 1. **Short answer**: How can things go wrong if two processes attempt the
    above plan at the same time? Is there more than one way things can go
    wrong?
 
+   ## Nothing seems to be going wrong. 
+
 2. Study and understand the skeleton code in the `src/` directory.
 
    **Short answer**: what do each of the arguments to `open()` mean?
 
+   ## file to open, flags and mode. Flags given are O_CREAT which means if file doesn't exist it will be created. O_RDWR means what permissions. 
+
 3. Take the skeleton code in the `src/` directory and implement the
    pieces marked. Run it.
    
-   **Short answer**: What happens? Do things go as planned and look
+   **Short answer**: What happens? Do thing go as planned and look
    sensible? What do you speculate is happening?
+
+   ## yes it is working. There is no problem with concurrency. 
 
 4. Add calls to [`flock()`](https://linux.die.net/man/2/flock) to
    capture and release an exclusive lock on the file before reading and

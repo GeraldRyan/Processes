@@ -118,12 +118,12 @@ int main(int argc, char **argv)
 	else
 	{
 		char *remainder;
-		if (num_processes = strtol(argv[1], &remainder, 10) < 1)
+		if ((num_processes = (strtol(argv[1], &remainder, 10))) < 1)
 		{
 			fprintf(stderr, "Please request 1 or more processes (exiting)\n");
 			return 2;
 		}
-		num_processes = strtol(argv[1], &remainder, 10);
+		// num_processes = strtol(argv[1], &remainder, 10);
 		printf("Rest of string: %s\n", remainder);
 	}
 	printf("Num processes %u\n", num_processes);
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 			// Open the balance file (feel free to call the helper
 			// functions, above).
 			fd = open_balance_file(BALANCE_FILE);
-
+			flock(fd, LOCK_EX);
 			// Read the current balance
 			read_balance(fd, &balance);
 			// Try to withdraw money
@@ -191,6 +191,7 @@ int main(int argc, char **argv)
 			// "Only have $%d, can't withdraw $%d\n"
 
 			// Close the balance file
+			flock(fd, LOCK_UN);
 			close_balance_file(fd);
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^
 
