@@ -173,18 +173,27 @@ int main(int argc, char **argv)
 			flock(fd, LOCK_EX);
 			// Read the current balance
 			read_balance(fd, &balance);
-			// Try to withdraw money
-			printf("Balance is %i and pid is %i\n", balance, getpid());
-			if (amount > balance)
+			// printf("Balance is %i and pid is %i\n", balance, getpid());
+			if (rand() % 2 == 0)
 			{
-				printf("Insufficient funds. Withdrawl amount attempted %d, balance: %d Returning card\n", amount, balance);
-			}
-			else
-			{
-				balance -= amount;
+				// Try to withdraw money
+				if (amount > balance)
+				{
+					printf("Insufficient funds. Withdrawl amount attempted %d, balance: %d Returning card\n", amount, balance);
+				}
+				else
+				{
+					balance -= amount;
+				}
+				write_balance(fd, balance);
 				printf("Withdrew %d, new balance is %d\n", amount, balance);
 			}
-			write_balance(fd, balance);
+			else
+			{ // deposit money
+				balance += amount;
+				write_balance(fd, balance);
+				printf("Deposited %d, new balance is %d\n", amount, balance);
+			}
 			// Sample messages to print:
 			//
 			// "Withdrew $%d, new balance $%d\n"
